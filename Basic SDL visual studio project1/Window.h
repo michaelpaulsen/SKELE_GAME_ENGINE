@@ -1,23 +1,34 @@
 #pragma once
 #include <SDL.h>
 #include <stdio.h>
+#include <functional>
+#include <vector>
+
+
+#include "GameState.h"
+#include "Enity.h"
+#include "Player.h"
+#include "World.h"
+
+#define EVENT_HANDLE_T std::function<bool (GameState_t, Player*, World)> 
 class Window
 {
 public:
-	const int delKey = 0x4C; 
-	Window(const char* name, int x, int y, int w, int h, uint32_t flags);
+	static const int delKey = 0x4C; 
+	Window(const char* name, int x, int y, int w, int h, EVENT_HANDLE_T eventLoop, uint32_t flags);
 	~Window();
-	virtual bool PollEvents();
-	bool quit; 
+	EVENT_HANDLE_T EventLoop; 
+	bool quit;
 	SDL_Event e;
 	SDL_Window *wind; 
+	static bool defaultEventLoop(GameState_t gamestate, Player* p, World current);
 };
 
 
 
-Window::Window(const char* name, int x, int y, int w, int h, uint32_t flags =0 ) {
+Window::Window(const char* name, int x, int y, int w, int h, EVENT_HANDLE_T eventLoop = Window::defaultEventLoop,  uint32_t flags =0 ) {
 		wind = SDL_CreateWindow(name, x, y, w, h, flags);
-		this->PollEvents();
+		EventLoop = eventLoop;
 }
 
 
@@ -25,9 +36,11 @@ Window::~Window()
 {
 
 }
-bool Window::PollEvents() {
+bool Window::defaultEventLoop(GameState_t gamestate, Player* p, World current) {
+	bool quit = false;
+	SDL_Event e; 
 	while (!quit) {
-		while (SDL_PollEvent(&this->e) != 0)
+		while (SDL_PollEvent(&e) != 0)
 		{
 			switch (e.type)
 			{
@@ -55,7 +68,7 @@ bool Window::PollEvents() {
 				auto keysym = kevent.keysym;
 				if (!kevent.repeat) {
 					auto state = SDL_GetModState();
-					bool modstate[3] = { state & KMOD_ALT,  state & KMOD_CTRL, state & KMOD_GUI };
+					int modstate[3] = { state & KMOD_ALT,  state & KMOD_CTRL, state & KMOD_GUI };
 					printf("user pressed ");
 					if (modstate[0]) {
 						printf("ALT + ");
@@ -72,7 +85,6 @@ bool Window::PollEvents() {
 				break;
 
 			}
-			
 			case SDL_KEYUP: {
 				break;
 			}
@@ -81,13 +93,13 @@ bool Window::PollEvents() {
 				break;
 			}
 			case SDL_TEXTEDITING: {
-				printf("editing text %s", e.text.text); 
+				printf("editing text %s", e.text.text);
 				//printf("a \"SDL_TEXTEDITING\" event happend \n");
 				break;
 			}
 			case SDL_TEXTINPUT: {
-				auto text = e.text; 
-				printf("a \"SDL_TEXTINPUT\" event happend \n\ttext inputed (%s)\n",text.text);
+				auto text = e.text;
+				printf("a \"SDL_TEXTINPUT\" event happend \n\ttext inputed (%s)\n", text.text);
 				break;
 			}
 			default: {
@@ -98,4 +110,4 @@ bool Window::PollEvents() {
 		}
 	}
 	return true;
-} 
+}
