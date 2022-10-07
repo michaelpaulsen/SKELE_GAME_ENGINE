@@ -4,6 +4,7 @@
 class Window
 {
 public:
+	const int delKey = 0x4C; 
 	Window(const char* name, int x, int y, int w, int h, uint32_t flags);
 	~Window();
 	virtual bool PollEvents();
@@ -55,18 +56,18 @@ bool Window::PollEvents() {
 				if (!kevent.repeat) {
 					auto state = SDL_GetModState();
 					bool modstate[3] = { state & KMOD_ALT,  state & KMOD_CTRL, state & KMOD_GUI };
-					printf("user pressed");
+					printf("user pressed ");
 					if (modstate[0]) {
-						printf("alt +");
+						printf("ALT + ");
 					}
 					if (modstate[1]) {
-						printf("CTRL +");
+						printf("CTRL + ");
 					}
 					if (modstate[2]) {
-						printf("GUI +");
+						printf("GUI + ");
 					}
 					printf(" %c (scancode: %X) \n", keysym.sym, keysym.scancode);
-					delete[] modstate; 
+					quit = (modstate[1] && keysym.scancode == Window::delKey); //ctrl + w close the window 
 				}
 				break;
 
