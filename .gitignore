@@ -1,0 +1,7 @@
+*.suo
+*.db
+*.opendb
+*.ipch
+/Basic SDL visual studio project1/Debug/
+/Basic SDL visual studio project1/x64/
+/x64/
