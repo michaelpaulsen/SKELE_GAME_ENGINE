@@ -10,23 +10,23 @@
 #include "Player.h"
 #include "World.h"
 
-#define EVENT_HANDLE_T std::function<bool (GameState_t, Player*, World)> 
+#define SKCGE_EVENT_HANDLE_T std::function<bool (Player*, World)> 
 class Window
 {
 public:
 	static const int delKey = 0x4C; 
-	Window(const char* name, int x, int y, int w, int h, EVENT_HANDLE_T eventLoop, uint32_t flags);
+	Window(const char* name, int x, int y, int w, int h, SKCGE_EVENT_HANDLE_T eventLoop, uint32_t flags);
 	~Window();
-	EVENT_HANDLE_T EventLoop; 
+	SKCGE_EVENT_HANDLE_T EventLoop; 
 	bool quit;
 	SDL_Event e;
 	SDL_Window *wind; 
-	static bool defaultEventLoop(GameState_t gamestate, Player* p, World current);
+	static bool defaultEventLoop(Player* p, World current);
 };
 
 
 
-Window::Window(const char* name, int x, int y, int w, int h, EVENT_HANDLE_T eventLoop = Window::defaultEventLoop,  uint32_t flags =0 ) {
+Window::Window(const char* name, int x, int y, int w, int h, SKCGE_EVENT_HANDLE_T eventLoop = Window::defaultEventLoop,  uint32_t flags =0 ) {
 		wind = SDL_CreateWindow(name, x, y, w, h, flags);
 		EventLoop = eventLoop;
 }
@@ -34,9 +34,10 @@ Window::Window(const char* name, int x, int y, int w, int h, EVENT_HANDLE_T even
 
 Window::~Window()
 {
+	SDL_free(this->wind); 
 
 }
-bool Window::defaultEventLoop(GameState_t gamestate, Player* p, World current) {
+bool Window::defaultEventLoop(Player* p, World current) {
 	bool quit = false;
 	SDL_Event e; 
 	while (!quit) {
@@ -80,7 +81,7 @@ bool Window::defaultEventLoop(GameState_t gamestate, Player* p, World current) {
 						printf("GUI + ");
 					}
 					printf(" %c (scancode: %X) \n", keysym.sym, keysym.scancode);
-					quit = (modstate[1] && keysym.scancode == Window::delKey); //ctrl + w close the window 
+					quit = (modstate[1]  && keysym.scancode == Window::delKey); //ctrl + w close the window 
 				}
 				break;
 

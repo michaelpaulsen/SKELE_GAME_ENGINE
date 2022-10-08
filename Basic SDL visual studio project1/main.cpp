@@ -12,7 +12,10 @@ int main(int argc, char* args[]){
 		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
 	}
 	else {
-		auto eh = Window("default test Window", SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE);
+		Player player; 
+		World world; 
+		auto eh = Window("default test Window", SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, Window::defaultEventLoop, SDL_WINDOW_RESIZABLE);
+		eh.EventLoop(&player, world);
 	}
 	//Quit SDL subsystems
 	SDL_Quit();
