@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <stdio.h>
 #include "Window.h"
+#include "Functions.h"
 
 //Screen dimension constants
 constexpr int SCREEN_WIDTH = 640;
@@ -17,8 +18,8 @@ int main(int argc, char* args[]){
 		auto eh = Window("default test Window", SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE);
 		defaultEventLoop(&eh, &player, &world);
 	}
-	//Quit SDL subsystems
-	SDL_Quit();
-
+	//SDL_Quit(); //this is not nessisary in C++ because the implicit destructors are called
+	//and what ever is not trivaly descructable is cleaned up by the kernal
+	//for somereason this is causing the program to hang on quit so do not use SDL_Quit
 	return 0;
 }
