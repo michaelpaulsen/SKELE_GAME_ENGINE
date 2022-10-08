@@ -9,9 +9,11 @@ public:
 	static const uint32_t GREEN_MASK = 0x00ff00;
 	static const uint32_t BLUE_MASK = 0x0000ff;
 	
+	Color(uint32_t color);
 	Color(uint8_t r, uint8_t g, uint8_t b);
+	Color();
 	~Color();
-	Color(Color&); 
+
 	uint8_t GetRedComp();
 	void SetRedComp(uint8_t);
 	
@@ -28,15 +30,15 @@ public:
 
 
 
+Color::Color(uint32_t _color): color(_color) {};
+Color::Color(): color(0) {};
 Color::Color(uint8_t r, uint8_t g, uint8_t b)
 {
 	this->color = r << (32-8); 
 	this->color |= g << (32-16); 
 	this->color |= b; 
 }
-Color::Color(Color& other) {
-	this->color = other.GetAllComp(); 
-}
+
 
 
 Color::~Color() = default;
