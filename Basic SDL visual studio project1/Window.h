@@ -10,34 +10,35 @@
 #include "Player.h"
 #include "World.h"
 
-#define SKCGE_EVENT_HANDLE_T std::function<bool (Player*, World)> 
+#define SKCGE_EVENT_HANDLE_T std::function<bool (Window*, Player*, World*)> 
 class Window
 {
 public:
 	static const int delKey = 0x4C; 
-	Window(const char* name, int x, int y, int w, int h, SKCGE_EVENT_HANDLE_T eventLoop, uint32_t flags);
+	Window(const char* name, int x, int y, int w, int h, uint32_t flags);
 	~Window();
-	SKCGE_EVENT_HANDLE_T EventLoop; 
 	bool quit;
 	SDL_Event e;
 	SDL_Window *wind; 
-	static bool defaultEventLoop(Player* p, World current);
+	SDL_Rect WindowRect; 
+	SDL_Surface* windBrush; //change this to a Brush when the time is rihgt 
 };
 
 
 
-Window::Window(const char* name, int x, int y, int w, int h, SKCGE_EVENT_HANDLE_T eventLoop = Window::defaultEventLoop,  uint32_t flags =0 ) {
+Window::Window(const char* name, int x, int y, int w, int h,  uint32_t flags =0 ) {
 		wind = SDL_CreateWindow(name, x, y, w, h, flags);
-		EventLoop = eventLoop;
+		windBrush = SDL_GetWindowSurface(this->wind); 
+		WindowRect = { x,y,w,h };
 }
 
 
 Window::~Window()
 {
 	SDL_free(this->wind); 
-
+	SDL_free(this->windBrush);//once you change this to a Brush this will need to be removed
 }
-bool Window::defaultEventLoop(Player* p, World current) {
+bool defaultEventLoop(Window* self, Player* p, World *current) {
 	bool quit = false;
 	SDL_Event e; 
 	while (!quit) {

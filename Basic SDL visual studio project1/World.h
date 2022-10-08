@@ -1,4 +1,5 @@
 #pragma once
 struct World {
-	//int tileIds[]; 
+	//static const int Width = ${something}, height = ${somethig};
+	//int tileIds[width*height];
 };

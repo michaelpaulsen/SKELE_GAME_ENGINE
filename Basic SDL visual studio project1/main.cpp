@@ -14,8 +14,8 @@ int main(int argc, char* args[]){
 	else {
 		Player player; 
 		World world; 
-		auto eh = Window("default test Window", SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, Window::defaultEventLoop, SDL_WINDOW_RESIZABLE);
-		eh.EventLoop(&player, world);
+		auto eh = Window("default test Window", SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE);
+		defaultEventLoop(&eh, &player, &world);
 	}
 	//Quit SDL subsystems
 	SDL_Quit();
