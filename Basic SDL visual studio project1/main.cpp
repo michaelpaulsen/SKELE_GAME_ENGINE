@@ -13,7 +13,7 @@ int main(int argc, char* args[]){
 		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
 	}
 	else {
-		Player player; 
+		Player player(16,16,16,16); 
 		World world; 
 		auto eh = Window("default test Window", SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE);
 		defaultEventLoop(&eh, &player, &world); 
