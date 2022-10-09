@@ -2,27 +2,19 @@
 #include <SDL.h>
 #include <functional>
 #include <vector>
+#include "Node.h"
 
-class Player
+class Player : public GameObject
 {
 	
 public:
-	int x, y; 
-	Player();
-	Player(int x, int y);
-	~Player();
+	Player() {
+		this->y = 0;
+		this->x = 0;
+	};
+	Player(float _x, float _y) {
+		this->x = _x;
+		this->y = _y;
+	};
+	~Player() = default; 
 };
-
-
-
-Player::Player(){
-	x = 0; 
-	y = 0;
-}
-Player::Player(int x, int y){
-}
-
-
-Player::~Player()
-{
-}

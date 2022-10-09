@@ -16,7 +16,7 @@ int main(int argc, char* args[]){
 		Player player; 
 		World world; 
 		auto eh = Window("default test Window", SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE);
-		defaultEventLoop(&eh, &player, &world);
+		defaultEventLoop(&eh, &player, &world); 
 	}
 	//SDL_Quit(); //this is not nessisary in C++ because the implicit destructors are called
 	//and what ever is not trivaly descructable is cleaned up by the kernal
